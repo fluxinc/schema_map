@@ -37,7 +37,7 @@ sorted, so the diff of a schema change is the diff of the map.
 
 ```ruby
 # Gemfile
-gem "schema_map", github: "fluxinc/schema_map", tag: "v0.1.0"
+gem "schema_map", github: "fluxinc/schema_map", tag: "v0.1.1"
 ```
 
 ```sh
@@ -49,9 +49,11 @@ The installer:
 - writes `config/initializers/schema_map.rb`;
 - writes `test/config/data_model_map_test.rb`, a **verify-only** Minitest guard that fails
   with a readable diff and the fix command, and never rewrites the file;
-- writes `.githooks/pre-commit`, which runs the check on every commit and, on failure, prints
-  the diff and the fix command — it never regenerates silently. It will not overwrite a
-  pre-commit hook it did not write; add `bin/rails agents:data_model:check` to yours;
+- writes `.githooks/pre-commit`, which runs the check on every commit **in the test
+  environment after `db:test:prepare`** — comparing the block against the schema the commit
+  ships (`db/schema.rb`), not the developer database's migration state — and, on failure,
+  prints the diff and the fix command. It never regenerates silently, and it will not overwrite
+  a pre-commit hook it did not write; add the same two commands to yours;
 - appends the markers to the target file (creating it if absent) and fills the block.
 
 Then enable the hook per clone — typically from `bin/setup`:

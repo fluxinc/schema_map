@@ -14,7 +14,10 @@ class SchemaMap::InstallGeneratorTest < Rails::Generators::TestCase
 
     assert_file "config/initializers/schema_map.rb", /SchemaMap.configure/
     assert_file "test/config/data_model_map_test.rb", /assert_data_model_map_current/
-    assert_file ".githooks/pre-commit", /agents:data_model:check/
+    assert_file ".githooks/pre-commit" do |hook|
+      assert_match(/RAILS_ENV=test bin\/rails db:test:prepare/, hook)
+      assert_match(/env RAILS_ENV=test bin\/rails agents:data_model:check/, hook)
+    end
     assert File.executable?(File.join(destination_root, ".githooks/pre-commit")), "hook must be executable"
     assert_file "AGENTS.md" do |content|
       assert_includes content, "<!-- data-model:begin -->"

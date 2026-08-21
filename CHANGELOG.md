@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1 — 2026-08-21
+
+- The installed pre-commit hook compares the block against the committed schema: it runs
+  `db:test:prepare` and the check in the test environment, so an unmigrated development database
+  (for example one awaiting a data migration's input) no longer blocks unrelated commits, while a
+  stale block still does.
+
 ## 0.1.0 — 2026-08-21
 
 - Reflection-based map: associations, Active Storage attachments, app concerns, non-boilerplate
