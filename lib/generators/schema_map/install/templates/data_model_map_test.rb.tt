@@ -1,0 +1,14 @@
+# frozen_string_literal: true
+
+require "test_helper"
+require "schema_map/test_helper"
+
+# Verifies only: the committed data-model map in <%= options[:file] %> must match the schema.
+# It never rewrites the file. Fix with `bin/rails agents:data_model`.
+class DataModelMapTest < ActiveSupport::TestCase
+  include SchemaMap::TestHelper
+
+  test "<%= options[:file] %> data-model map is current" do
+    assert_data_model_map_current
+  end
+end

@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+
+# SchemaMap keeps a generated, verified data-model map inside <%= options[:file] %>.
+# Regenerate: bin/rails agents:data_model   Verify: bin/rails agents:data_model:check
+SchemaMap.configure do |config|
+  config.file = <%= options[:file].inspect %>
+<% if options[:ownership_column] -%>
+  # The column that scopes records to their owner; each model line reports how it reaches it.
+  config.ownership_column = <%= options[:ownership_column].inspect %>
+<% else -%>
+  # Set the column that scopes records to their owner to add an `owner` segment per model, e.g. "account_id".
+  # config.ownership_column = nil
+<% end -%>
+  # Tables whose models are left out of the map. Models from engines and gems are always left out.
+  # config.excluded_tables = SchemaMap::Configuration::DEFAULT_EXCLUDED_TABLES
+end
