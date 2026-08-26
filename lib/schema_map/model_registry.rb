@@ -27,7 +27,12 @@ module SchemaMap
       return false if model.name.nil?
 
       location = Object.const_source_location(model.name)&.first
-      location && location.start_with?(@config.root_path.to_s)
+      location && location.start_with?(@config.root_path.to_s) && !migration_file?(location)
+    end
+
+    def migration_file?(location)
+      migrations_path = @config.root_path.join("db/migrate").to_s
+      location == migrations_path || location.start_with?("#{migrations_path}#{File::SEPARATOR}")
     end
 
     def excluded_table?(table_name)

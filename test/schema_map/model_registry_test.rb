@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require_relative "../dummy/db/migrate/temporary_migration"
 
 class SchemaMap::ModelRegistryTest < ActiveSupport::TestCase
   test "lists non-abstract app models sorted by name" do
@@ -11,6 +12,11 @@ class SchemaMap::ModelRegistryTest < ActiveSupport::TestCase
   test "excludes models defined outside the application root" do
     names = SchemaMap::ModelRegistry.new(SchemaMap::Configuration.new(root: Rails.root)).models.map(&:name)
     refute_includes names, "FakeEngine::Blob"
+  end
+
+  test "excludes temporary Active Record classes defined inside migrations" do
+    names = SchemaMap::ModelRegistry.new(SchemaMap::Configuration.new(root: Rails.root)).models.map(&:name)
+    refute_includes names, "TemporaryMigration::MigrationUser"
   end
 
   test "excludes configured tables" do
