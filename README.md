@@ -28,7 +28,8 @@ and — when an ownership column is configured — how the model reaches it: `ow
 (direct), `owner via a.b.case_id` (through `belongs_to` chain), `owner self` (the owner
 table), or `owner none`. STI children render as `(table; STI < Parent)` without repeating
 columns. Models from engines and gems (Active Storage, Solid Queue, …) are never listed;
-only models defined under your application root are.
+temporary Active Record classes defined inside migrations are also excluded. Only application
+models defined under your application root are listed.
 
 Output is deterministic: models, associations, columns, indexes, and constraints are all
 sorted, so the diff of a schema change is the diff of the map.
@@ -37,7 +38,7 @@ sorted, so the diff of a schema change is the diff of the map.
 
 ```ruby
 # Gemfile
-gem "schema_map", github: "fluxinc/schema_map", tag: "v0.1.1"
+gem "schema_map", github: "fluxinc/schema_map", tag: "v0.1.2"
 ```
 
 ```sh

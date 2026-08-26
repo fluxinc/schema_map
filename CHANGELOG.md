@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2 — 2026-08-26
+
+- Exclude temporary Active Record classes defined inside migration files, preventing automatic
+  post-migration regeneration from polluting the generated map with migration-only models.
+
 ## 0.1.1 — 2026-08-21
 
 - The installed pre-commit hook compares the block against the committed schema: it runs
